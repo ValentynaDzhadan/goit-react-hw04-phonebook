@@ -4,29 +4,34 @@ import { Filter } from '../components/Filter/Filter';
 import { ContactList } from '../components/ContactList/ContactList';
 import { v4 as uuidv4 } from 'uuid';
 
-const localStorageContactsKey = 'contacts';
+const LOCAL_STORAGE_CONTACTS_KEY = 'contacts';
+
+const initialContacts = [
+  { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+  { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+  { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+  { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+];
 
 export class App extends Component {
   state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
+    contacts: [],
     filter: '',
   };
   componentDidMount() {
-    const newContacts =
-      JSON.parse(localStorage.getItem(localStorageContactsKey)) ??
-      this.state.contacts;
-    this.setState({ contacts: newContacts });
+    const newContacts = JSON.parse(
+      localStorage.getItem(LOCAL_STORAGE_CONTACTS_KEY)
+    );
+    console.log(newContacts);
+    this.setState({
+      contacts: newContacts?.length > 0 ? newContacts : initialContacts,
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.contacts !== this.state.contacts) {
       localStorage.setItem(
-        localStorageContactsKey,
+        LOCAL_STORAGE_CONTACTS_KEY,
         JSON.stringify(this.state.contacts)
       );
     }
