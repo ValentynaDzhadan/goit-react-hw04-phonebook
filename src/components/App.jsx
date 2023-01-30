@@ -4,6 +4,8 @@ import { Filter } from '../components/Filter/Filter';
 import { ContactList } from '../components/ContactList/ContactList';
 import { v4 as uuidv4 } from 'uuid';
 
+const localStorageContactsKey = 'contacts';
+
 export class App extends Component {
   state = {
     contacts: [
@@ -16,13 +18,17 @@ export class App extends Component {
   };
   componentDidMount() {
     const newContacts =
-      JSON.parse(localStorage.getItem('contacts')) ?? this.state.contacts;
+      JSON.parse(localStorage.getItem(localStorageContactsKey)) ??
+      this.state.contacts;
     this.setState({ contacts: newContacts });
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.contacts !== this.state.contacts) {
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+      localStorage.setItem(
+        localStorageContactsKey,
+        JSON.stringify(this.state.contacts)
+      );
     }
   }
 
